@@ -6,6 +6,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const pinRoute = require("./routes/pins");
+const userRoute = require("./routes/users");
+
 dotenv.config();
 app.use(express.json());
 
@@ -20,7 +23,8 @@ mongoose.connect(process.env.MONGO_URL, {
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-
+app.use("/api/users", userRoute);
+app.use("/api/pins",pinRoute);
 
 app.listen(process.env.PORT, (req,res) => {
   console.log("Backend server running at 8800 port");
