@@ -1,14 +1,15 @@
 import * as React from "react";
+import "./app.css";
 import Map from "react-map-gl";
 import { useEffect, useState } from "react";
-
-import ReactMapGL ,{Marker} from "react-map-gl";
+import { Room, Star } from "@material-ui/icons";
+import ReactMapGL ,{Marker,Popup} from "react-map-gl";
 
 export default function App() {
   const [viewPort, setviewPort] = useState({
     latitude: 46,
     longitude: 17,
-    zoom: 1,
+    zoom: 4,
   });
   const [currStyle, setCurrStyle] = useState({ width: "100vw", height: "100vh" });
   // return  (
@@ -25,11 +26,35 @@ export default function App() {
       initialViewState={viewPort}
       style={currStyle}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
-      mapStyle="mapbox://styles/mapbox/streets-v9"
+      // mapStyle="mapbox://styles/mapbox/streets-v9"
+      mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
     >
-       <Marker longitude={2.2945} latitude={48.8584}  offsetLeft = {-20} offsetTop = {-10} anchor="bottom" >
-       <div>Here-IS-the-marker</div>  
+       <Marker longitude={2.2945} latitude={48.8584} anchor="bottom" >
+        <Room style={{ fontSize: viewPort.zoom*7 ,color :"red" }}/>
         </Marker>
+        <Popup longitude={2.2945} latitude={48.8584}
+        anchor="left"
+        >
+
+        <div className="card">
+          <label>Place</label>
+          <h4 className="place">Eiffell Tower</h4>
+          <label>Review</label>
+          <p>Beautiful Place</p>
+          <label>Rating</label>
+          <div className="starts">
+            <Star />
+            <Star />
+            <Star />
+            <Star />
+            <Star />
+          </div>
+          <label>Information</label>
+          <span className="username" >Created by <b>Mayank</b></span>
+          <span className="date" >1 hour ago</span>
+
+        </div>
+      </Popup>
     </Map>
   );
 }
