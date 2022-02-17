@@ -11,14 +11,10 @@ export default function App() {
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
-  const [viewport, setViewport] = useState({
-    latitude: 46,
-    longitude: 17,
-    zoom: 4,
-  });
-  const [currStyle, setCurrStyle] = useState({
-    width: "100vw",
-    height: "100vh",
+  const [viewport, setViewport] = React.useState({
+    longitude: 0,
+    latitude: 40,
+    zoom: 4
   });
 
   useEffect(() => {
@@ -33,14 +29,16 @@ export default function App() {
     getPins();
   }, []);
 
-  const handleMarkerClick = (id) => {
+  
+  const handleMarkerClick = (id, lat, long) => {
     setCurrentPlaceId(id);
-  };
+    setViewport({ ...viewport, latitude: lat, longitude: long });
+  }
 
   const handleAddClick = (event) => {
-    console.log(event);
-    console.log(event.lngLat);
-    console.log(event.lngLat.lat);
+    // console.log(event);
+    // console.log(event.lngLat);
+    // console.log(event.lngLat.lat);
     // console.log(lng,lat);
     setNewPlace({
       lng:event.lngLat.lng,
@@ -57,9 +55,11 @@ export default function App() {
   //   </div>
   // )
   return (
+    <div style={{ height: "100vh", width: "100%" }}>
     <Map
-      initialViewState={viewport}
-      style={currStyle}
+    {...viewport}
+    onMove={evt => setViewport(evt.viewState)}
+      style={{width : "100%",height : "100%"}}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
       // mapStyle="mapbox://styles/mapbox/streets-v9"
       mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
@@ -80,7 +80,7 @@ export default function App() {
                 color: "red",
                 cursor: "pointer",
               }}
-              onClick={() => handleMarkerClick(p._id)}
+              onClick={() => handleMarkerClick(p._id,p.lat,p.long)}
             />
           </Marker>
           {p._id === currentPlaceId && (
@@ -114,5 +114,6 @@ export default function App() {
         </Popup>
       )}
     </Map>
+    </div>
   );
 }
