@@ -3,7 +3,7 @@ import "./app.css";
 import Map from "react-map-gl";
 import { useEffect, useState } from "react";
 import { Room, Star } from "@material-ui/icons";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import { Marker, Popup } from "react-map-gl";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import axios from "axios";
@@ -44,10 +44,6 @@ export default function App() {
   };
 
   const handleAddClick = (event) => {
-    // console.log(event);
-    // console.log(event.lngLat);
-    // console.log(event.lngLat.lat);
-    // console.log(lng,lat);
     setNewPlace({
       lng: event.lngLat.lng,
       lat: event.lngLat.lat,
@@ -76,15 +72,7 @@ export default function App() {
     setCurrentUser(null);
     myStorage.removeItem("user");
   };
-  // return  (
-  //   <div>
-  //     <ReactMapGL
-  //       {...viewPort}
-  //       mapboxAccessToken ="pk.eyJ1IjoiZ3JpbW8iLCJhIjoiY2t6b2FiZm51MzZtcTJ1b2NyaDJudTlycSJ9.Mk6nUp9NF1xRyWUeuQHV0g"
-  //       onViewportChange={nextViewport=>setviewPort(nextViewport)}
-  //     />
-  //   </div>
-  // )
+
   return (
     <Map
       {...viewport}
