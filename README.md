@@ -14,14 +14,16 @@ Use the following commands in the both the folders
 ```bash
   npm start
 ```
-## Features
 
-- Minimalist and elegant User Interface.
-- Keeps track of your previous records.
-- Provides information about different users.
-
-## Demo
+## Sneekpeek
 ![](images/1.png)
 ![](images/2.png)
 ![](images/3.png)
 ![](images/4.png)
+
+## Features
+- Minimalist and elegant User Interface.
+- Keeps track of your previous records.
+- Provides information about different users.
+
+
