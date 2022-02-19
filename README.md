@@ -1,6 +1,11 @@
 # Travel-Map
 A simplistic scratch map application intended to create a community for explorers all around the world to share their amazing experiences with each other. This is just the start of something extraordinary so that not so experienced could also start their journey.
   
+## Sneekpeek
+![](images/1.png)
+![](images/2.png)
+![](images/3.png)
+
 ## Documentation
 This project is divided into two parts client and the API so you will need to have your MongoDB password and MAPBOX API token stored in the respective folders.
 Use the following commands in the both the folders
@@ -14,13 +19,6 @@ Use the following commands in the both the folders
 ```bash
   npm start
 ```
-
-## Sneekpeek
-![](images/1.png)
-![](images/2.png)
-![](images/3.png)
-![](images/4.png)
-
 ## Features
 - Minimalist and elegant User Interface.
 - Keeps track of your previous records.
