@@ -177,7 +177,13 @@ export default function App() {
           </button>
         </div>
       )}
-      {showRegister && <Register setShowRegister={setShowRegister} />}
+      {showRegister && (
+        <Register
+          setShowRegister={setShowRegister}
+          myStorage={myStorage}
+          setCurrentUsername={setCurrentUser}
+        />
+      )}
       {showLogin && (
         <Login
           setShowLogin={setShowLogin}

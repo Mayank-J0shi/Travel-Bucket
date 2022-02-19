@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import "./register.css";
 
-export default function Register({ setShowRegister }) {
+export default function Register({ setShowRegister,myStorage,setCurrentUsername }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const usernameRef = useRef();
@@ -47,6 +47,7 @@ export default function Register({ setShowRegister }) {
         {success && (
           <span className="success">Registration Completed Successfully!</span>
         )}
+        {success && (setShowRegister(false))}
         {error && <span className="failure">Something went wrong!</span>}
       </form>
       <Cancel
