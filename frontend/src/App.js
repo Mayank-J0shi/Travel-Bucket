@@ -8,17 +8,17 @@ import axios from "axios";
 import { format } from "timeago.js";
 
 export default function App() {
+  const [currentUser,setCurrentUser] = useState(null);
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
-  const [viewport, setViewport] = useState({
-    latitude: 46,
-    longitude: 17,
+  const [title, setTitle] = useState(null);
+  const [desc, setDesc] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [viewport, setViewport] = React.useState({
+    longitude: 0,
+    latitude: 40,
     zoom: 4,
-  });
-  const [currStyle, setCurrStyle] = useState({
-    width: "100vw",
-    height: "100vh",
   });
 
   useEffect(() => {
@@ -33,19 +33,39 @@ export default function App() {
     getPins();
   }, []);
 
-  const handleMarkerClick = (id) => {
+  const handleMarkerClick = (id, lat, long) => {
     setCurrentPlaceId(id);
+    setViewport({ ...viewport, latitude: lat, longitude: long });
   };
 
   const handleAddClick = (event) => {
-    console.log(event);
-    console.log(event.lngLat);
-    console.log(event.lngLat.lat);
+    // console.log(event);
+    // console.log(event.lngLat);
+    // console.log(event.lngLat.lat);
     // console.log(lng,lat);
     setNewPlace({
-      lng:event.lngLat.lng,
-      lat:event.lngLat.lat
+      lng: event.lngLat.lng,
+      lat: event.lngLat.lat,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newPin = {
+      username: currentUser,
+      title,
+      desc,
+      rating,
+      lat: newPlace.lat,
+      long: newPlace.lng,
+    };
+    try {
+      const res = await axios.post("/pins", newPin);
+      setPins([...pins, res.data]);
+      setNewPlace(null);
+    } catch (err) {
+      console.log(err);
+    }
   };
   // return  (
   //   <div>
@@ -58,8 +78,9 @@ export default function App() {
   // )
   return (
     <Map
-      initialViewState={viewport}
-      style={currStyle}
+      {...viewport}
+      onMove={(evt) => setViewport(evt.viewState)}
+      style={{ width: "100%", height: "100vh" }}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
       // mapStyle="mapbox://styles/mapbox/streets-v9"
       mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
@@ -80,7 +101,7 @@ export default function App() {
                 color: "red",
                 cursor: "pointer",
               }}
-              onClick={() => handleMarkerClick(p._id)}
+              onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
             />
           </Marker>
           {p._id === currentPlaceId && (
@@ -92,11 +113,7 @@ export default function App() {
                 <p>{p.desc}</p>
                 <label>Rating</label>
                 <div className="stars">
-                  <Star className="star" />
-                  <Star className="star" />
-                  <Star className="star" />
-                  <Star className="star" />
-                  <Star className="star" />
+                  {Array(p.rating).fill(<Star className="star" />)}
                 </div>
                 <label>Information</label>
                 <span className="username">
@@ -109,11 +126,52 @@ export default function App() {
         </>
       ))}
       {newPlace && (
-        <Popup longitude={newPlace.lng} latitude={newPlace.lat} anchor="left">
-        Hello
+        <Popup
+          longitude={newPlace.lng}
+          latitude={newPlace.lat}
+          closeButton={true}
+          closeOnClick={false}
+          onClose={() => setNewPlace(null)}
+          anchor="left"
+        >
+          <div>
+            <form onSubmit={handleSubmit}>
+              <label>Title</label>
+              <input
+                placeholder="Enter a title"
+                onChange={(e) => setTitle(e.target.value)}
+              ></input>
+              <label>Review</label>
+              <textarea
+                placeholder="Say Something about this place"
+                onChange={(e) => setDesc(e.target.value)}
+              ></textarea>
+              <label>Rating</label>
+              <select onChange={(e) => setRating(e.target.value)}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <button className="submitButton" type="submit">
+                Add Pin
+              </button>
+            </form>
+          </div>
         </Popup>
+      )}
+
+      {currentUser ? (
+        <button className="button logout">Logout</button>
+      ) : (
+        <div className="buttons">
+          <button className="button login">Login</button>
+          <button className="button register">Register</button>
+        </div>
       )}
     </Map>
   );
 }
-/////////checking
+
+//add transition duration to slow down the focused view when we click a certain map location
