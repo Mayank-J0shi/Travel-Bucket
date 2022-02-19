@@ -30,7 +30,7 @@ export default function Register({ setShowRegister }) {
     <div className="registerContainer">
       <div className="logo">
         <Room className="logoIcon" />
-        <span>LamaPin</span>
+        <span>Travel Bucket</span>
       </div>
       <form onSubmit={handleSubmit}>
         <input autoFocus placeholder="username" ref={usernameRef} />
@@ -45,7 +45,7 @@ export default function Register({ setShowRegister }) {
           Register
         </button>
         {success && (
-          <span className="success">Successfull. You can login now!</span>
+          <span className="success">Registration Completed Successfully!</span>
         )}
         {error && <span className="failure">Something went wrong!</span>}
       </form>

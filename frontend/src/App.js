@@ -4,11 +4,14 @@ import Map from "react-map-gl";
 import { useEffect, useState } from "react";
 import { Room, Star } from "@material-ui/icons";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import Register from "./components/Register";
+import Login from "./components/Login";
 import axios from "axios";
 import { format } from "timeago.js";
 
 export default function App() {
-  const [currentUser,setCurrentUser] = useState(null);
+  const myStorage = window.localStorage;
+  const [currentUser, setCurrentUser] = useState(myStorage.getItem("user"));
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
@@ -16,10 +19,12 @@ export default function App() {
   const [desc, setDesc] = useState(null);
   const [rating, setRating] = useState(0);
   const [viewport, setViewport] = React.useState({
-    longitude: 0,
-    latitude: 40,
+    latitude: 47.040182,
+    longitude: 17.071727,
     zoom: 4,
   });
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     const getPins = async () => {
@@ -67,6 +72,10 @@ export default function App() {
       console.log(err);
     }
   };
+  const handleLogout = () => {
+    setCurrentUser(null);
+    myStorage.removeItem("user");
+  };
   // return  (
   //   <div>
   //     <ReactMapGL
@@ -83,7 +92,8 @@ export default function App() {
       style={{ width: "100%", height: "100vh" }}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
       // mapStyle="mapbox://styles/mapbox/streets-v9"
-      mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
+      // mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
+      mapStyle="mapbox://styles/grimo/ckzttlpwr002x14q6blc0vj4a"
       onDblClick={handleAddClick}
     >
       {pins.map((p) => (
@@ -98,7 +108,7 @@ export default function App() {
             <Room
               style={{
                 fontSize: viewport.zoom * 5,
-                color: "red",
+                color: currentUser === p.username ? "red" : "slateblue",
                 cursor: "pointer",
               }}
               onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
@@ -163,14 +173,30 @@ export default function App() {
       )}
 
       {currentUser ? (
-        <button className="button logout">Logout</button>
+        <button className="button logout" onClick={handleLogout}>
+          Logout
+        </button>
       ) : (
         <div className="buttons">
-          <button className="button login">Login</button>
-          <button className="button register">Register</button>
+          <button className="button login" onClick={() => setShowLogin(true)}>
+            Login
+          </button>
+          <button
+            className="button register"
+            onClick={() => setShowRegister(true)}
+          >
+            Register
+          </button>
         </div>
+      )}
+      {showRegister && <Register setShowRegister={setShowRegister} />}
+      {showLogin && (
+        <Login
+          setShowLogin={setShowLogin}
+          myStorage={myStorage}
+          setCurrentUsername={setCurrentUser}
+        />
       )}
     </Map>
   );
 }
-
