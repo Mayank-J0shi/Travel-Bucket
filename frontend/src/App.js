@@ -174,4 +174,3 @@ export default function App() {
   );
 }
 
-//add transition duration to slow down the focused view when we click a certain map location
