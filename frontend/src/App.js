@@ -80,8 +80,8 @@ export default function App() {
       style={{ width: "100%", height: "100vh" }}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
       // mapStyle="mapbox://styles/mapbox/streets-v9"
-      // mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
-      mapStyle="mapbox://styles/grimo/ckzttlpwr002x14q6blc0vj4a"
+      mapStyle="mapbox://styles/safak/cknndpyfq268f17p53nmpwira"
+      // mapStyle="mapbox://styles/grimo/ckzttlpwr002x14q6blc0vj4a"
       onDblClick={handleAddClick}
     >
       {pins.map((p) => (
